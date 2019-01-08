@@ -38,7 +38,7 @@ export default {
   components: {
     Col,
     Row
-	}
+  }
 }
 </script>
 

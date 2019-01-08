@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <el-container>
+    <el-container class="my_main">
       
       <el-header>
         <div style="width: 100%;height: 100%;background: black">
@@ -49,8 +49,16 @@ export default {
 </script>
 
 <style>
+  .my_main{
+
+  }
 .ico{
   height: 100%;
+}
+.el-footer{
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
 }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
