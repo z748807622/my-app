@@ -28,6 +28,7 @@
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
     </ul>
   </div>
+  <el-button :plain="true" @click="open2">成功</el-button>
 </template>
 
 <script>
@@ -35,6 +36,14 @@ export default {
   name: 'HelloWorld',
   props: {
     msg: String
+  },
+  methods:{
+    open2(){
+      this.$message({
+          message: '恭喜你，这是一条成功消息',
+          type: 'success'
+        });
+    }
   }
 }
 </script>
