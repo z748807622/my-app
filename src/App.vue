@@ -1,30 +1,26 @@
 <template>
   <div id="app">
+
+    <el-header>
+        <img class="ico" src="./assets/logo.png">
+    </el-header>
+
     <el-container class="my_main">
-      
-      <el-header>
-        <div style="width: 100%;height: 100%;background: black">
-          <img class="ico" src="./assets/logo.png">
-        </div>
-      </el-header>
 
       <el-container>
-        <el-aside>
+        <el-aside class="my_left_container">
           <div style="width: 100%;height: 100%;background: #f5f5f5"></div>
         </el-aside>
-        <el-main>
-          <div style="width: 100%;text-align: center;background: gray">
-            <el-button :plain="true" @click="open2">成功</el-button>
+        <el-container class="my_container">
+            <!--<el-button :plain="true" @click="open2">成功</el-button>-->
             <layout/>
-          </div>
-        </el-main>
+        </el-container>
       </el-container>
 
-      <el-footer>
-        <div style="width: 100%;height: 100%;background: red"></div>
-      </el-footer>
-
     </el-container>
+    <el-footer>
+
+    </el-footer>
   </div>
 </template>
 
@@ -32,8 +28,15 @@
 //import HelloWorld from './components/HelloWorld.vue'
 import Layout from './components/Layout.vue'
 
+
+
 export default {
   name: 'app',
+    data(){
+      return{
+          fullscreenLoading:false
+      }
+    },
   components: {
     'layout':Layout
   },
@@ -49,24 +52,44 @@ export default {
 </script>
 
 <style>
+  *{
+    padding: 0;
+    margin: 0;
+  }
   .my_main{
 
   }
 .ico{
   height: 100%;
 }
+.my_container{
+  height: 800px;
+  width: 100%;
+}
+.my_left_container{
+  height: 100%;
+  background: #f5f5f5;
+  width: 30px;
+}
+.el-header{
+  width: 100%;
+  background: black;
+  text-align: center;
+}
 .el-footer{
   position: fixed;
   bottom: 0px;
   width: 100%;
+  background: black;
+  text-align: center;
 }
-#app {
+/*#app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
+}*/
 </style>
 
 <style>
