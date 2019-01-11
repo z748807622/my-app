@@ -1,14 +1,14 @@
 <template>
   <div id="app">
 
-    <el-header>
+    <el-header id="header">
         <img class="ico" src="./assets/logo.png">
     </el-header>
 
-    <el-container class="my_main">
+    <el-container class="my_main" id="my_main">
 
       <el-container>
-        <el-aside class="my_left_container">
+        <el-aside class="my_left_container" id="my_left_container" width="400px">
           <div style="width: 100%;height: 100%;background: #f5f5f5"></div>
         </el-aside>
         <el-container class="my_container">
@@ -18,7 +18,7 @@
       </el-container>
 
     </el-container>
-    <el-footer>
+    <el-footer id="footer">
 
     </el-footer>
   </div>
@@ -27,7 +27,7 @@
 <script>
 //import HelloWorld from './components/HelloWorld.vue'
 import Layout from './components/Layout.vue'
-
+var $ = require("jquery")
 
 
 export default {
@@ -47,7 +47,13 @@ export default {
           type: 'success'
         });
     }
-  }
+  },
+    mounted:function () {
+        $("#my_main").height($(window).height() - $("#footer").height() - $("#header").height());
+        window.onresize = function () {
+            $("#my_main").height($(window).height() - $("#footer").height() - $("#header").height());
+        }
+    }
 }
 </script>
 
@@ -57,7 +63,7 @@ export default {
     margin: 0;
   }
   .my_main{
-
+    overflow: hidden;
   }
 .ico{
   height: 100%;
@@ -69,7 +75,6 @@ export default {
 .my_left_container{
   height: 100%;
   background: #f5f5f5;
-  width: 30px;
 }
 .el-header{
   width: 100%;
