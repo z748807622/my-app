@@ -138,14 +138,14 @@
     }
 
     .display_msg{
-        height: 85%;
-        //background: #55a532;
+        height: calc(100vh - 80px);
         padding: 5px 10px;
     }
 
     .sendMsg .msg_input{
         width: 100%;
         margin-bottom: 2px;
+        min-height:50px;
     }
 
     .sendMsg .el-button{
@@ -156,7 +156,6 @@
         position: absolute;
         bottom: 0px;
         width: 100%;
-        height: 15%;
     }
     .el-textarea textarea{
         resize: none;

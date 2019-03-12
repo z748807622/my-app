@@ -61,7 +61,6 @@
         cursor: pointer;
     }
     #my_video, #cover{
-        //transform: scale(0.5);
         position: relative;
         top: 2px;
     }
