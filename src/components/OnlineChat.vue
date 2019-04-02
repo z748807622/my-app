@@ -1,13 +1,15 @@
 <template>
     <div class="left_div">
+
+        <div style="height: 30px;">
+            <span style="float: left">nick:{{myNickName}}</span>
+            <span style="float: right">在线人数:{{onlineNum}}</span>
+        </div>
+
         <div class="display_msg">
-            <div style="height: 30px;">
-                <span style="float: left">nick:{{myNickName}}</span>
-                <span style="float: right">在线人数:{{onlineNum}}</span>
-            </div>
             <span v-for="todo in lists">
                 <el-card shadow="hover">
-                    {{todo.user}}:{{todo.msg}}
+                    <span class="nickName">{{todo.user}}</span>:<span class="msg">{{todo.msg}}</span>
                 </el-card>
             </span>
         </div>
@@ -15,7 +17,7 @@
             <el-input
                     class="msg_input"
                     type="textarea"
-                    :rows="2"
+                    :rows="3"
                     placeholder="请输入内容"
                     v-on:keyup.enter.native="sendMsg"
                     v-model="textarea">
@@ -51,7 +53,7 @@
         },
         methods:{
             initWebSocket(){
-                const wsuri = "ws://localhost:9999/ws"
+                const wsuri = "ws://127.0.0.1:9999/ws"
                 this.websocket = new WebSocket(wsuri);
                 this.websocket.onopen = this.wsOpen();
                 this.websocket.onerror = this.wsError;
@@ -86,7 +88,7 @@
 
                     this.pingTimer = setInterval(()=>{//浏览器链接心跳
                         this.ping();
-                    },10000);
+                    },40000);
 
                 }else if (data.extend && data.extend.code == 20002 && !data.extend.mess) {
                     this.$message.error('nick登陆失败');
@@ -106,7 +108,7 @@
                     code:10000
                 }
                 console.log("nickName",loginMse)
-                this.websocket.send(JSON.stringify(loginMse));
+                this.send(JSON.stringify(loginMse));
             },
             sendMsg(){
                 console.log("发送消息:",this.textarea)
@@ -114,14 +116,23 @@
                     code:10086,
                     mess:this.textarea
                 }
-                this.websocket.send(JSON.stringify(sendMsg));
+                this.send(JSON.stringify(sendMsg));
                 this.textarea = "";
             },
             ping(){//发送ping
                 var pingMsg = {
                     code:10015
                 }
-                this.websocket.send(JSON.stringify(pingMsg));
+                this.send(JSON.stringify(pingMsg));
+            },
+            send(msg){
+                try{
+                    this.websocket.send(msg);
+                }catch (e) {
+                    this.$message.error('发送失败，服务器断开连接');
+                    this.isLogin = false;
+                    clearInterval(this.pingTimer);
+                }
             }
         }
     }
@@ -135,11 +146,14 @@
         width: 100%;
         background: #f5f5f5;
         position: relative;
+        overflow: hidden;
     }
 
     .display_msg{
-        height: calc(100vh - 80px);
+        height: calc(100vh - 180px);
         padding: 5px 10px;
+        overflow: scroll;
+        overflow-x: hidden;
     }
 
     .sendMsg .msg_input{
@@ -153,9 +167,9 @@
     }
 
     .sendMsg{
-        position: absolute;
+        position: fixed;
         bottom: 0px;
-        width: 100%;
+        width: 372px;
     }
     .el-textarea textarea{
         resize: none;
