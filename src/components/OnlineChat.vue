@@ -9,7 +9,19 @@
         <div class="display_msg">
             <span v-for="todo in lists">
                 <el-card shadow="hover">
-                    <span class="nickName">{{todo.user}}</span>:<span class="msg">{{todo.msg}}</span>
+                    <div v-if="todo.user != nickName" slot="header" class="display_msg_header">
+                        <span class="nickName" style="width:15%;">{{todo.user}}</span>
+                        <span class="msgTime" style="width:70%;">{{todo.time}}</span>
+                        <span class="msgTime" style="width:15%;">
+                            <el-button style="padding: 3px 0" type="text">操作</el-button>
+                        </span>
+                    </div>
+                    <div v-if="todo.user == nickName" slot="header" class="display_msg_header">
+                        <span class="nickName" style="width:15%;"></span>
+                        <span class="msgTime" style="width:70%;">{{todo.time}}</span>
+                        <span style="width: 15%;color:red;" class="nickName">我</span>
+                    </div>
+                    {{todo.msg}}
                 </el-card>
             </span>
         </div>
@@ -97,7 +109,8 @@
                 if (data.body){
                     var dd = {
                         msg:data.body,
-                        user:data.extend.nick
+                        user:data.extend.nick,
+                        time:data.extend.time
                     }
                     this.lists.push(dd);
                 }
@@ -152,8 +165,29 @@
     .display_msg{
         height: calc(100vh - 180px);
         padding: 5px 10px;
-        overflow: scroll;
+        overflow: auto;
         overflow-x: hidden;
+    }
+
+    .display_msg .el-card__body{
+        white-space:normal;
+        word-break:break-all;
+        word-wrap:break-word;
+        padding: 11px !important;
+    }
+
+    .el-card__header{
+        padding: 7px 20px !important;
+    }
+
+    .display_msg_header{
+        font-size: 13px;
+        color: gray;
+        text-align: center;
+    }
+
+    .display_msg_header span{
+        display: inline-block;
     }
 
     .sendMsg .msg_input{
