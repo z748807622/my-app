@@ -1,6 +1,11 @@
 <template>
 	<div class="layout-main">
-		<myvideo/>
+		<div v-if="global.isLogin">
+			<myvideo/>
+		</div>
+		<div v-if="!global.isLogin">
+			<Login/>
+		</div>
 	</div>
 </template>
 
@@ -8,10 +13,27 @@
     import Login from './Login.vue'
     import myvideo from './video.vue'
 
+	/*const tLogin = Login,tVideo = myvideo;
+    const routes = [
+		{path:'/login',component:tLogin},
+		{path:'/video',component:tVideo}
+	];
+    const route = new VueRouter({
+		routes
+	})*/
+
+	console.log('aaa',global)
+
 export default {
+		data(){
+			return {
+				global:this.GLOBAL
+			}
+		},
   name: 'Layout',
   components: {
-      myvideo
+      myvideo,
+	  Login
   }
 }
 </script>

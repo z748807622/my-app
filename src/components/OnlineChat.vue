@@ -9,14 +9,14 @@
         <div class="display_msg">
             <span v-for="todo in lists">
                 <el-card shadow="hover">
-                    <div v-if="todo.user != nickName" slot="header" class="display_msg_header">
+                    <div v-if="todo.user != myNickName" slot="header" class="display_msg_header">
                         <span class="nickName" style="width:15%;">{{todo.user}}</span>
                         <span class="msgTime" style="width:70%;">{{todo.time}}</span>
                         <span class="msgTime" style="width:15%;">
                             <el-button style="padding: 3px 0" type="text">操作</el-button>
                         </span>
                     </div>
-                    <div v-if="todo.user == nickName" slot="header" class="display_msg_header">
+                    <div v-if="todo.user == myNickName" slot="header" class="display_msg_header">
                         <span class="nickName" style="width:15%;"></span>
                         <span class="msgTime" style="width:70%;">{{todo.time}}</span>
                         <span style="width: 15%;color:red;" class="nickName">我</span>
@@ -51,7 +51,8 @@
                 myNickName:'',
                 onlineNum:0,
                 pingTimer:null,
-                lists:[]
+                lists:[],
+                listsLock:false,
             }
         },
         created(){
@@ -70,6 +71,9 @@
                 this.websocket.onopen = this.wsOpen();
                 this.websocket.onerror = this.wsError;
                 this.websocket.onmessage = this.wsMessage;
+
+                this.GLOBAL.msgSocket = this.websocket;
+
                 this.websocket.onClose = function () {
                     //console.log("聊天室关闭");
                     this.$message({message:'聊天室关闭',type:'warn'});
@@ -91,19 +95,24 @@
 
                 if(data.extend && data.extend.code == 20001){//接收在线人数信息
                     this.onlineNum = data.extend.mess;
+                    return;
                 }
 
                 if(data.extend && data.extend.code == 20002 && data.extend.mess){//认证登陆
-                    this.myNickName = this.nickName;
-                    this.$message({message:'nick登陆成功',type:'success'});
+                    this.myNickName = this.GLOBAL.nickName;
+                    this.$message({message:this.myNickName+'登陆成功',type:'success'});
                     this.isLogin = true;
+
+                    this.GLOBAL.nickName = this.nickName
+                    this.GLOBAL.isLogin = true
 
                     this.pingTimer = setInterval(()=>{//浏览器链接心跳
                         this.ping();
                     },40000);
-
+                    return;
                 }else if (data.extend && data.extend.code == 20002 && !data.extend.mess) {
                     this.$message.error('nick登陆失败');
+                    return;
                 }
 
                 if (data.body){
@@ -145,6 +154,31 @@
                     this.$message.error('发送失败，服务器断开连接');
                     this.isLogin = false;
                     clearInterval(this.pingTimer);
+                }
+            },
+            displayMsg(msg,times){//显示消息
+
+                if(this.lists.length < 150){//如果消息没有超过100条
+                    this.lists.push(msg)
+                    return;
+                }
+
+                var that = this;
+
+                if(times >= 100){//自旋超过100次
+                    this.listsLock = false;
+                    //return;
+                }
+
+                if(this.listsLock){
+                    setTimeout(()=>{
+                        that.displayMsg(msg,times+1);
+                    },200);
+                }else{
+                    this.listsLock = true;
+                    this.lists = this.lists.splice(this.lists.length-100,this.lists.length)
+                    this.lists.push(msg)
+                    this.listsLock = false;
                 }
             }
         }
