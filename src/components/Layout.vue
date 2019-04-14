@@ -1,5 +1,10 @@
 <template>
 	<div class="layout-main">
+		<div style="position: fixed;left: 0px;" v-show="global.isLogin">
+			<el-aside class="my_left_container" id="my_left_container" width="372px">
+				<Msg/>
+			</el-aside>
+		</div>
 		<div v-if="global.isLogin">
 			<myvideo/>
 		</div>
@@ -12,6 +17,7 @@
 <script>
     import Login from './Login.vue'
     import myvideo from './video.vue'
+	import Msg from './OnlineChat.vue'
 
 	/*const tLogin = Login,tVideo = myvideo;
     const routes = [
@@ -33,7 +39,8 @@ export default {
   name: 'Layout',
   components: {
       myvideo,
-	  Login
+	  Login,
+	  Msg
   }
 }
 </script>

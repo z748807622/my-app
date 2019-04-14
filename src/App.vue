@@ -1,21 +1,17 @@
 <template>
   <div id="app">
 
-    <el-header class="header" id="header">
-        <img class="ico" src="./assets/logo.png">
+    <el-header class="header" id="header" style="font-size: 35px;background: #a1a1a1">
+        <!--<img class="ico" src="./assets/logo.png">-->
+        实时视频共享系统
     </el-header>
 
     <el-container class="my_main" id="my_main">
 
-      <el-container>
-        <el-aside class="my_left_container" id="my_left_container" width="400px">
-            <Msg/>
-        </el-aside>
         <el-container class="my_container">
             <!--<el-button :plain="true" @click="open2">成功</el-button>-->
             <layout/>
         </el-container>
-      </el-container>
 
     </el-container>
     <!--<el-footer class="footer" id="footer">
@@ -27,7 +23,6 @@
 <script>
 //import HelloWorld from './components/HelloWorld.vue'
 import Layout from './components/Layout.vue'
-import Msg from './components/OnlineChat.vue'
 var $ = require("jquery")
 
 
@@ -35,12 +30,12 @@ export default {
   name: 'app',
     data(){
       return{
-          fullscreenLoading:false
+          fullscreenLoading:false,
+          isShow:this.GLOBAL.isLogin
       }
     },
   components: {
     'layout':Layout,
-    'Msg':Msg
   },
   methods:{
     open2(){

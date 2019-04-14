@@ -6,7 +6,7 @@
                 <el-input
                     placeholder="用户名"
                     prefix-icon="icon-username"
-                    v-model="nickName"
+                    v-model="loginName"
                     ></el-input>
             </el-col>
         </el-row>
@@ -40,7 +40,7 @@
         data(){
             return{
                 loading:null,
-                nickName:'',
+                loginName:'',
                 passwd:'',
             }
         },
@@ -54,15 +54,31 @@
         },
         methods:{
             login(){
-                console.log(this.nickName,this.passwd)
+                console.log(this.loginName,this.passwd)
                 var loginMsg = {
-                    nick:this.nickName,
+                    loginName:this.loginName,
                     passwd:this.passwd,
                     code:10000
                 }
-                this.GLOBAL.nickName = this.nickName
+                let that = this;
+                this.GLOBAL.easyPost("http://"+this.GLOBAL.ip+":8033/login",JSON.stringify(loginMsg),function (res) {
+                    console.log("登陆信息返回",res)
+                    if (res && res.data && res.data.code == 0){
+                        that.$message({message:res.data.nickMame+'登陆成功',type:'success'});
+                        that.GLOBAL.nickName = res.data.nickName
+                        that.GLOBAL.token = res.data.data
+                        console.log(loginMsg)
+                        that.GLOBAL.msgSocket.send(JSON.stringify({token:that.GLOBAL.token,nick:that.GLOBAL.nickName,code:10000}));
+                    }else {
+                        that.$message.error('登陆失败' + res.data.msg);
+                    }
+                },function (err) {
+                    console.log("err",err)
+                    that.$message.error('登陆失败;' + err);
+                })
+                /*this.GLOBAL.nickName = this.nickName
                 console.log(loginMsg)
-                this.GLOBAL.msgSocket.send(JSON.stringify(loginMsg));
+                this.GLOBAL.msgSocket.send(JSON.stringify(loginMsg));*/
             }
         }
     }

@@ -11,7 +11,7 @@
     export default {
         data(){
             return{
-                url:"ws://192.168.0.104:8888/ws",
+                url:"ws://" + this.GLOBAL.ip + ":1111/ws",
                 volume:50,
                 flag:true,
                 player:null,

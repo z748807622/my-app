@@ -6,7 +6,7 @@
             <span style="float: right">在线人数:{{onlineNum}}</span>
         </div>
 
-        <div class="display_msg">
+        <div class="display_msg" ref="displayMsg">
             <span v-for="todo in lists">
                 <el-card shadow="hover">
                     <div v-if="todo.user != myNickName" slot="header" class="display_msg_header">
@@ -34,7 +34,7 @@
                     v-on:keyup.enter.native="sendMsg"
                     v-model="textarea">
             </el-input>
-            <el-input v-if="!isLogin" v-model="nickName" placeholder="输入nickName" v-on:keyup.enter.native.stop="login"></el-input>
+            <!--<el-input v-if="!isLogin" v-model="nickName" placeholder="输入nickName" v-on:keyup.enter.native.stop="login"></el-input>-->
         </div>
     </div>
 </template>
@@ -66,7 +66,7 @@
         },
         methods:{
             initWebSocket(){
-                const wsuri = "ws://127.0.0.1:9999/ws"
+                const wsuri = "ws://" + this.GLOBAL.ip + ":9999/ws"
                 this.websocket = new WebSocket(wsuri);
                 this.websocket.onopen = this.wsOpen();
                 this.websocket.onerror = this.wsError;
@@ -157,8 +157,7 @@
                 }
             },
             displayMsg(msg,times){//显示消息
-
-                if(this.lists.length < 150){//如果消息没有超过100条
+                if(this.lists.length < 10){//如果消息没有超过100条
                     this.lists.push(msg)
                     return;
                 }
@@ -178,6 +177,7 @@
                     this.listsLock = true;
                     this.lists = this.lists.splice(this.lists.length-100,this.lists.length)
                     this.lists.push(msg)
+                    console.log("清楚多余的消息")
                     this.listsLock = false;
                 }
             }
