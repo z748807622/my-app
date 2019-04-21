@@ -113,6 +113,9 @@
                 }else if (data.extend && data.extend.code == 20002 && !data.extend.mess) {
                     this.$message.error('nick登陆失败');
                     return;
+                }else if (data.code == 9999){
+                    console.log("直播信息",data.mess)
+                    this.bus.$emit('getLiveVideo',data.mess)
                 }
 
                 if (data.body){
@@ -157,12 +160,14 @@
                 }
             },
             displayMsg(msg,times){//显示消息
+                let that = this
                 if(this.lists.length < 10){//如果消息没有超过100条
                     this.lists.push(msg)
+                    setTimeout(() => {
+                        that.$refs.displayMsg.scrollTop = that.$refs.displayMsg.scrollHeight
+                    },500)
                     return;
                 }
-
-                var that = this;
 
                 if(times >= 100){//自旋超过100次
                     this.listsLock = false;
@@ -180,6 +185,9 @@
                     console.log("清楚多余的消息")
                     this.listsLock = false;
                 }
+                setTimeout(() => {
+                    that.$refs.displayMsg.scrollTop = that.$refs.displayMsg.scrollHeight
+                },500)
             }
         }
     }

@@ -5,16 +5,18 @@
 
     import axios from 'axios'
 
-    let nickName='',token='',isLogin=false,msgSocket=null,ip = '192.168.1.102';
+    let nickName='',token='',isLogin=false,msgSocket=null,ip = '192.168.1.100';
     export default {
         nickName,
         token,
         isLogin,
         msgSocket,
         ip,
-        easyPost
+        easyPost,
+        axios,
+        httpServe: "http://"+ip + ":8033"
     }
-    function easyPost(url,data,success,error) {//"Content-type":"application/json;charset=utf-8"
+    function easyPost(url,data,success,error) {// "Content-type":"application/json;charset=utf-8"
         axios.post(url,data,{headers:{"Content-type":"application/json"}}).then(success).catch(error)
     }
 </script>

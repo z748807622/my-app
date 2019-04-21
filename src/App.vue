@@ -70,7 +70,7 @@ export default {
   width: 100%;
 }
 .my_left_container{
-  height: 100%;
+  height: calc(100% - 60px);
   background: #f5f5f5;
 }
 .header{
