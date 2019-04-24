@@ -11,13 +11,13 @@
 		<div v-if="!global.isLogin" key="2">
 			<Login/>
 		</div>
-		<div style="position: absolute;right: 0px;height: 100%;top: 0px;" v-if="global.isLogin"  key="3">
+		<div style="position: absolute;right: 0px;height: 100%;top: 0px;" v-if="global.nickName == '管理员'"  key="3">
 			<div style="height: 60px; z-index: 0"></div>
 			<el-aside class="my_left_container" id="my_left_container" width="372px">
 				<admin />
 			</el-aside>
 		</div>
-		<div ref="videoList" style="width: 1036px;text-align:left; border: 1px solid red;height: 150px;position: absolute;bottom: 40px;left: 50%;margin: 0 0 0 -518px;overflow-y: auto;">
+		<div ref="videoList" v-if="global.nickName == '管理员'" key="4" style="width: 1036px;text-align:left; border: 1px solid red;height: 150px;position: absolute;bottom: 40px;left: 50%;margin: 0 0 0 -518px;overflow-y: auto;">
 			<ul>
 				<li v-for="item in liveList" key="item">
 					{{item}}

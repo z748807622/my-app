@@ -6,7 +6,7 @@
             <span style="float: right">在线人数:{{onlineNum}}</span>
         </div>
 
-        <div class="display_msg" ref="displayMsg">
+        <div class="display_msg" ref="displayMsg" style="text-align: left">
             <span v-for="todo in lists">
                 <el-card shadow="hover">
                     <div v-if="todo.user != myNickName" slot="header" class="display_msg_header">
@@ -99,11 +99,9 @@
                 }
 
                 if(data.extend && data.extend.code == 20002 && data.extend.mess){//认证登陆
-                    this.myNickName = this.GLOBAL.nickName;
                     this.$message({message:this.myNickName+'登陆成功',type:'success'});
                     this.isLogin = true;
-
-                    this.GLOBAL.nickName = this.nickName
+                    this.myNickName = this.GLOBAL.nickName;
                     this.GLOBAL.isLogin = true
 
                     this.pingTimer = setInterval(()=>{//浏览器链接心跳
